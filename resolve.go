@@ -49,8 +49,8 @@ func init() {
 		tag string
 		l   []string
 	}{
-		{true, boolTag, []string{"true", "True", "TRUE"}},
-		{false, boolTag, []string{"false", "False", "FALSE"}},
+		{true, boolTag, []string{"true", "True", "TRUE", "ON"}},
+		{false, boolTag, []string{"false", "False", "FALSE", "OFF"}},
 		{nil, nullTag, []string{"", "~", "null", "Null", "NULL"}},
 		{math.NaN(), floatTag, []string{".nan", ".NaN", ".NAN"}},
 		{math.Inf(+1), floatTag, []string{".inf", ".Inf", ".INF"}},
