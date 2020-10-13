@@ -298,6 +298,13 @@ func isBase60Float(s string) (result bool) {
 // is bogus. In practice parsers do not enforce the "\.[0-9_]*" suffix.
 var base60float = regexp.MustCompile(`^[-+]?[0-9][0-9_]*(?::[0-5]?[0-9])+(?:\.[0-9_]*)?$`)
 
+func isDate(s string) (result bool) {
+	return date.MatchString(s)
+}
+
+// From http://yaml.org/type/timestamp.html
+var date = regexp.MustCompile(`^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]|[0-9][0-9][0-9][0-9]-[0-9][0-9]?-[0-9][0-9]?([Tt]|[ \t]+)[0-9][0-9]?:[0-9][0-9]:[0-9][0-9](\.[0-9]*)?(([ \t]*)Z|[-+][0-9][0-9]?(:[0-9][0-9])?)?$`)
+
 func (e *encoder) stringv(tag string, in reflect.Value) {
 	var style yaml_scalar_style_t
 	s := in.String()
@@ -319,7 +326,7 @@ func (e *encoder) stringv(tag string, in reflect.Value) {
 		// tag when encoded unquoted. If it doesn't,
 		// there's no need to quote it.
 		rtag, _ := resolve("", s)
-		canUsePlain = rtag == strTag && !isBase60Float(s)
+		canUsePlain = rtag == strTag && !isBase60Float(s) && !isDate(s)
 	}
 	// Note: it's possible for user code to emit invalid YAML
 	// if they explicitly specify a tag and a string containing
